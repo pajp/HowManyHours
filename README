@@ -1,0 +1,13 @@
+This is a simple command-line application for macOS that will take an
+ICS (iCal) feed (passed as argument), locate entries with summary "You
+{exited,entered} work", calculate their time difference and present a
+daily and weekly summary of your work hours.
+
+It is intended to be used with this IFTTT applet which lets you
+automatically save calendar entries based on your iOS device
+geolocation:
+
+  https://ifttt.com/applets/ud7hrSuw-track-your-work-hours-in-ios-calendar
+
+It depends on libical being installed in /usr/local/lib (available in
+Homebrew).
