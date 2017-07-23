@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3AC0F53F1F1E346400DDC2DB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC0F53E1F1E346400DDC2DB /* main.m */; };
+		3AC0F5461F1E34BA00DDC2DB /* libical.2.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AC0F5451F1E34BA00DDC2DB /* libical.2.0.0.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		3AC0F53B1F1E346400DDC2DB /* HowManyHoursCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HowManyHoursCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC0F53E1F1E346400DDC2DB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3AC0F5451F1E34BA00DDC2DB /* libical.2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libical.2.0.0.dylib; path = /usr/local/Cellar/libical/2.0.0/lib/libical.2.0.0.dylib; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AC0F5461F1E34BA00DDC2DB /* libical.2.0.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				3AC0F53E1F1E346400DDC2DB /* main.m */,
+				3AC0F5451F1E34BA00DDC2DB /* libical.2.0.0.dylib */,
 			);
 			path = HowManyHoursCLI;
 			sourceTree = "<group>";
@@ -168,6 +172,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -210,6 +216,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -251,6 +259,7 @@
 				3AC0F5441F1E346400DDC2DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
