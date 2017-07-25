@@ -70,8 +70,12 @@ void doTheThing(NSString* calendarData) {
             printf("\033[34;1m");
         }
         pyjama = !pyjama;
-        printf("%25s --> %.2f hours\033[0m\n", [formatter stringFromDate:lastDate].UTF8String, hours);
-        printf("");
+        NSString* formattedString = [formatter stringFromDate:lastDate];
+        NSMutableString* padding = [NSMutableString new];
+        for (int i=0; i < 25 - formattedString.length; i++) [padding appendString:@" "];
+
+        printf("%s%s --> %.2f hours\033[0m\n", padding.UTF8String, formattedString.UTF8String, hours);
+
         if (weekSummary) {
             printf("\033[37;36m**** WEEK TOTAL: \033[1m%d\033[0;37;36m days, %.2f hours, %.2f hours per day\033[0m\n", dayCountThisWeek, weekTotal, weekTotal/dayCountThisWeek);
             weekTotal = 0;
