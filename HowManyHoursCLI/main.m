@@ -9,6 +9,16 @@
 #import <Foundation/Foundation.h>
 #include <libical/ical.h>
 
+BOOL useAnsi() {
+    static dispatch_once_t onceToken;
+    static BOOL ansiCapableTerminal;
+    dispatch_once(&onceToken, ^{
+        // Xcode allocates a tty but does not set $TERM. Good enough.
+        ansiCapableTerminal = isatty(fileno(stdin)) && getenv("TERM");
+    });
+    return ansiCapableTerminal;
+}
+
 
 void doTheThing(NSString* calendarData) {
     icalcomponent* root = icalparser_parse_string([calendarData cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -41,7 +51,10 @@ void doTheThing(NSString* calendarData) {
         NSDate* date2 = obj2[@"time"];
         return [date1 compare:date2];
     }];
-    printf("\033[1K\r");
+
+    if (useAnsi()) printf("\033[1K\r");
+    else printf("\n");
+
     NSCalendar* cal = [NSCalendar currentCalendar];
     __block NSDate* lastDate = nil;
     __block NSDate* lastEntered = nil;
@@ -67,17 +80,17 @@ void doTheThing(NSString* calendarData) {
         dayCount++;
         dayCountThisWeek++;
         if (pyjama) {
-            printf("\033[34;1m");
+            if (useAnsi()) printf("\033[34;1m");
         }
         pyjama = !pyjama;
         NSString* formattedString = [formatter stringFromDate:lastDate];
         NSMutableString* padding = [NSMutableString new];
         for (int i=0; i < 25 - formattedString.length; i++) [padding appendString:@" "];
 
-        printf("%s%s --> %.2f hours\033[0m\n", padding.UTF8String, formattedString.UTF8String, hours);
+        printf("%s%s --> %.2f hours%s\n", padding.UTF8String, formattedString.UTF8String, hours, useAnsi() ? "\033[0m" : "");
 
         if (weekSummary) {
-            printf("\033[37;36m**** WEEK TOTAL: \033[1m%d\033[0;37;36m days, %.2f hours, %.2f hours per day\033[0m\n", dayCountThisWeek, weekTotal, weekTotal/dayCountThisWeek);
+            printf("%s**** WEEK TOTAL: %s%d%s days, %.2f hours, %.2f hours per day%s\n", useAnsi() ? "\033[37;36m" : "", useAnsi() ? "\033[1m" : "", dayCountThisWeek, useAnsi() ? "\033[0;37;36m" : "", weekTotal, weekTotal/dayCountThisWeek, useAnsi() ? "\033[0m" : "");
             weekTotal = 0;
             dayCountThisWeek = 0;
         }
