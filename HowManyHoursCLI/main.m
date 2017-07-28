@@ -72,7 +72,7 @@ void doTheThing(NSString* calendarData) {
         formatter.dateStyle = NSDateFormatterFullStyle;
         formatter.timeStyle = NSDateFormatterNoStyle;
         double hours = timeThisDay/60.0/60.0;
-        if (exitsThisDay == 1) { // Did not leave office for lunch, deducting 0.5 hours
+        if (exitsThisDay == 1 && hours > 4) { // Did not leave office for lunch, deducting 0.5 hours
             hours -= .5;
         }
         totalHours += hours;
