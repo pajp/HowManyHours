@@ -67,7 +67,7 @@ void doTheThing(NSString* calendarData) {
     __block BOOL pyjama = NO;
     // Put the summarizer function in a block that we can call both in the
     // iterator and once after the last processed event
-    void (^summarizer)(BOOL) = ^void(BOOL weekSummary) {
+    void (^summarizer)(BOOL, BOOL) = ^void(BOOL weekSummary, BOOL totalSummary) {
         NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
         formatter.dateStyle = NSDateFormatterFullStyle;
         formatter.timeStyle = NSDateFormatterNoStyle;
@@ -94,6 +94,17 @@ void doTheThing(NSString* calendarData) {
             weekTotal = 0;
             dayCountThisWeek = 0;
         }
+        
+        BOOL isYesterday = [cal isDateInYesterday:lastDate];
+        if (isYesterday || totalSummary) {
+            NSUserNotificationCenter* nc = [NSUserNotificationCenter defaultUserNotificationCenter];
+            NSUserNotification* notification = [[NSUserNotification alloc] init];
+            notification.title = [NSString stringWithFormat:@"Hours for %@", formattedString];
+            notification.informativeText = [NSString stringWithFormat:@"%.f hours", hours];
+            [nc deliverNotification:notification];
+            //sleep(1);
+        }
+        
     };
     
     [sortedEvents enumerateObjectsUsingBlock:^(NSDictionary*  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -104,7 +115,7 @@ void doTheThing(NSString* calendarData) {
         }
         if (lastDate && [cal compareDate:eventTime toDate:lastDate toUnitGranularity:NSCalendarUnitDay] != NSOrderedSame) {
             if (timeThisDay) {
-                summarizer(weekChange);
+                summarizer(weekChange, NO);
                 timeThisDay = 0;
                 exitsThisDay = 0;
             }
@@ -117,15 +128,16 @@ void doTheThing(NSString* calendarData) {
             NSTimeInterval duration = [eventTime timeIntervalSinceDate:lastDate];
             timeThisDay += duration;
             exitsThisDay++;
-//            NSLog(@"Left work after %f hours at %@", duration/60/60, eventTime);
+#if defined(DEBUG) && 0
+            NSLog(@"Left work after %d hours, %d minutes at %@", (int) floor(duration/60/60), (int)((duration-floor(duration/60/60))/60), eventTime);
+#endif
         } else {
             NSLog(@"****** Unknown event summary %@", eventTitle);
         }
         lastDate = eventTime;
     }];
-    summarizer(YES);
+    summarizer(YES, YES);
     printf("**** Total %d days, %.2f hours, %.2f hours per day\n", dayCount, totalHours, totalHours / dayCount);
-    exit(0);
 }
 
 int main(int argc, const char * argv[]) {
@@ -138,9 +150,11 @@ int main(int argc, const char * argv[]) {
         urlString = [urlString stringByReplacingOccurrencesOfString:@"webcal:" withString:@"https:"];
         NSURL* url = [NSURL URLWithString:urlString];
         NSURLSession* session = [NSURLSession sharedSession];
+        __block BOOL didTheThing = NO;
         NSURLSessionDataTask* task = [session dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             if (!error) {
                 doTheThing([NSString stringWithUTF8String:data.bytes]);
+                didTheThing = YES;
             } else {
                 NSLog(@"%@", error);
             }
@@ -149,7 +163,9 @@ int main(int argc, const char * argv[]) {
         fflush(stdout);
         [task resume];
         NSRunLoop* rl = [NSRunLoop mainRunLoop];
-        [rl run];
+        while (!didTheThing) {
+            [rl runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
+        }
     }
     return 0;
 }

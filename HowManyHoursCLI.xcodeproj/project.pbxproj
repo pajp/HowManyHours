@@ -27,6 +27,7 @@
 		3AC0F53B1F1E346400DDC2DB /* HowManyHoursCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HowManyHoursCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC0F53E1F1E346400DDC2DB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3AC0F5451F1E34BA00DDC2DB /* libical.2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libical.2.0.0.dylib; path = /usr/local/Cellar/libical/2.0.0/lib/libical.2.0.0.dylib; sourceTree = "<absolute>"; };
+		3AF1CCB51F540A2700151AF0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 			children = (
 				3AC0F53E1F1E346400DDC2DB /* main.m */,
 				3AC0F5451F1E34BA00DDC2DB /* libical.2.0.0.dylib */,
+				3AF1CCB51F540A2700151AF0 /* Info.plist */,
 			);
 			path = HowManyHoursCLI;
 			sourceTree = "<group>";
@@ -227,7 +229,9 @@
 		3AC0F5431F1E346400DDC2DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEVELOPMENT_TEAM = 7BJ49E34RD;
+				INFOPLIST_FILE = "$(SRCROOT)/HowManyHoursCLI/Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -235,7 +239,9 @@
 		3AC0F5441F1E346400DDC2DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
 				DEVELOPMENT_TEAM = 7BJ49E34RD;
+				INFOPLIST_FILE = "$(SRCROOT)/HowManyHoursCLI/Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
